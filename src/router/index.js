@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+/* import bootstrap from 'bootstrap' */
 import Pocetna from '../views/Pocetna.vue'
+//Vue.use(BootstrapVue)
 
 const routes = [
   {
@@ -21,5 +23,6 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
 
 export default router
