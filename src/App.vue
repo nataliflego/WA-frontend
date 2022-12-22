@@ -4,7 +4,7 @@
       v-b-toggle.sidebar-no-header
       block
       variant="outline-dark"
-      class="button"
+      class="button1"
       >IZBORNIK</b-button
     >
     <b-sidebar
@@ -43,6 +43,25 @@
         </div>
       </template>
     </b-sidebar>
+    <!--     <div :style="image"></div> -->
+    <br />
+
+    <div class="kontejner">
+      <div class="prvi">
+        <img src="@/assets/slika5.jpg" alt="bolesti" class="slika1" />
+      </div>
+      <div class="drugi">
+        <h2>BOLEST I ZDRAVLJE</h2>
+        <p>
+          Aplikacija za pomaganje u <br />
+          bolestima koja je temeljena <br />
+          na iskustvima pacijenata
+        </p>
+        <div class="butun">
+          <button type="button" class="btn btn-light">KRENI</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- <router-view />  -->
@@ -53,7 +72,6 @@
    
   <router-link to="/upisibolest">UpisiBolest</router-link>    -->
 
-
  <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -63,10 +81,13 @@
   /* color: #14b637; */
 
   padding: 1.5rem 4% 8% 4%;
-  background-color: rgb(94, 210, 49);
+  /*   background-color: rgb(118, 224, 233); */
+  background-color: rgb(255, 255, 255);
+  max-width: 100%; //doesn't work :)
+  height: auto; //doesn't work :)
 }
 
-.button {
+.button1 {
   margin-top: 20px;
   width: 10%;
 }
@@ -81,6 +102,7 @@ h4 {
   margin-left: 18%;
   width: 180px;
 }
+
 .sidebar {
   /* background: rgb(83, 28, 233);    nanke ne dela  */
 }
@@ -95,12 +117,55 @@ nav {
     }
   } */
 }
+.kontejner {
+  padding: 60px;
+  // gap: 50px;   ne dela
+  /*  vertical-align: middle; */
+}
+.prvi {
+  display: inline-block;
+  /*   background-color: rgb(255, 35, 233); */
+  width: 45%;
+  margin-right: 7%;
+  margin-left: 10px;
+}
+.drugi {
+  display: inline-block;
+  /*   background-color: rgb(140, 232, 43); */
+  margin-top: 10px;
+  text-align: center;
+  margin-right: 10px;
+  margin-left: 8%;
+}
+p {
+  padding: 10%;
+  font-size: 20px;
+}
+h2 {
+  margin: 10px;
+}
+.slika1 {
+  width: 100%;
+}
+.butun {
+  display: inline-block;
+  /*  margin-top: 20px; */
+}
 </style>
 
 <script>
 export default {
   name: "App",
+  data() {
+    /*  return {
+      image: { backgroundImage: "url(src/assets/slika5.jpg)" },
+    }; */
+  },
 };
+
 /* import Vue from "vue";
 alert(`Vue version : ${Vue.version}`); */
 </script>
+
+
+

@@ -2,6 +2,7 @@
 import App from './App.vue'
 import router from './router'
 import Vue from 'vue'
+import VueMq from 'vue-mq'
 
 //import bootstrap from 'bootstrap' 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -22,4 +23,11 @@ new Vue({
 
 }).$mount('#app')
 
-
+Vue.use(VueMq, {
+    breakpoints: {
+        mobile: 450,
+        tablet: 900,
+        laptop: 1250,
+        desktop: Infinity,
+    }
+})
