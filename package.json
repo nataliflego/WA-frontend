@@ -14,7 +14,7 @@
     "vue": "^2.7.14",
     "vue-loader": "^17.0.1",
     "vue-mq": "^1.0.1",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",

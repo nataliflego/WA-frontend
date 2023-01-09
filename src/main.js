@@ -4,6 +4,8 @@ import router from './router'
 import Vue from 'vue'
 import VueMq from 'vue-mq'
 
+
+
 //import bootstrap from 'bootstrap' 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
@@ -12,6 +14,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+
+
 // Vue.use(require('bootstrap-vue/dist/bootstrap-vue.common.min'));
 
 // createApp(App).use(router).mount('#app') (za vue3)

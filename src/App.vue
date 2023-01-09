@@ -24,10 +24,17 @@
           <nav class="mb-3">
             <b-nav vertical>
               <b-nav-item active @click="hide">Početna</b-nav-item>
-              <b-nav-item href="/upisibolest" @click="hide"
-                >Upisi bolest</b-nav-item
+              <a
+                ><b-nav-item href="@/views/UpisiBolest.vue" @click="hide"
+                  >Upisi bolest</b-nav-item
+                >
+              </a>
+              <!-- <a :href="link">My Link</a>  -->
+              <b-nav-item
+                href="https://vuejs.org/guide/essentials/component-basics.html#using-a-component"
+                @click="hide"
+                >Prijava</b-nav-item
               >
-              <b-nav-item href="#link-2" @click="hide">Prijava</b-nav-item>
 
               <b-nav-item href="/upisibolest" active @click="hide"
                 >Registracija</b-nav-item
@@ -46,22 +53,26 @@
     <!--     <div :style="image"></div> -->
     <br />
 
-    <div class="kontejner">
+    <pocetnakomponenta />
+    <!--  <div class="kontejner">
       <div class="prvi">
         <img src="@/assets/slika5.jpg" alt="bolesti" class="slika1" />
       </div>
       <div class="drugi">
         <h2>BOLEST I ZDRAVLJE</h2>
         <p>
-          Aplikacija za pomaganje u <br />
-          bolestima koja je temeljena <br />
+          Aplikacija za pomaganje u
+          <br />
+          bolestima koja je temeljena
+          <br />
           na iskustvima pacijenata
         </p>
         <div class="butun">
-          <button type="button" class="btn btn-light">KRENI</button>
+          <a class="btn btn-success" href="/upisibolest" role="button">KRENI</a>
         </div>
       </div>
-    </div>
+    </div> -->
+    <router-view />
   </div>
 
   <!-- <router-view />  -->
@@ -106,21 +117,10 @@ h4 {
 .sidebar {
   /* background: rgb(83, 28, 233);    nanke ne dela  */
 }
-nav {
-  /*padding: 25px;
-
-  a {
-    font-weight: bold;
-    color: #e6e92c;
-    &.router-link-exact-active {
-      color: #d21771;
-    }
-  } */
-}
 .kontejner {
   padding: 60px;
-  // gap: 50px;   ne dela
-  /*  vertical-align: middle; */
+  margin-top: 20px;
+  // gap: 50px;                      ne dela
 }
 .prvi {
   display: inline-block;
@@ -129,6 +129,9 @@ nav {
   margin-right: 7%;
   margin-left: 10px;
 }
+.slika1 {
+  width: 100%;
+}
 .drugi {
   display: inline-block;
   /*   background-color: rgb(140, 232, 43); */
@@ -136,31 +139,47 @@ nav {
   text-align: center;
   margin-right: 10px;
   margin-left: 8%;
+  vertical-align: middle;
 }
 p {
-  padding: 10%;
+  padding: 10px;
   font-size: 20px;
+  /* background-color: rgb(76, 103, 103); */
 }
 h2 {
   margin: 10px;
+  /* padding: 2%; */
 }
-.slika1 {
-  width: 100%;
+
+/* a:link {                           podsjetnik
+  text-decoration: none;
 }
-.butun {
-  display: inline-block;
-  /*  margin-top: 20px; */
+a:visited {
+  text-decoration: none;
 }
+a:hover {
+  text-decoration: underline;
+}
+a:active {
+  text-decoration: underline;
+} */
 </style>
 
 <script>
+import pocetnakomponenta from "@/components/pocetnakomponenta.vue";
+
 export default {
   name: "App",
+  /*
   data() {
-    /*  return {
+      return {
       image: { backgroundImage: "url(src/assets/slika5.jpg)" },
-    }; */
-  },
+    }; 
+  },*/
+  components: {
+    pocetnakomponenta,
+  } /* ,
+  data: () => ({ link: "/views/upisibolest.vue" }), */,
 };
 
 /* import Vue from "vue";
