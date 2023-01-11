@@ -1,4 +1,8 @@
-# frontend1
+# WA-frontend
+
+Frontend repozitorij aplikacije "Bolest i zdravlje"
+
+<!-- # frontend1
 
 This template should help get you started developing with Vue 3 in Vite.
 
@@ -26,4 +30,4 @@ npm run dev
 
 ```sh
 npm run build
-```
+``` -->
