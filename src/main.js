@@ -1,37 +1,15 @@
-//import { createApp } from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import Vue from 'vue'
-import VueMq from 'vue-mq'
 
+//import './assets/main.css'
 
+import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap"
+import 'bootstrap-icons/font/bootstrap-icons'
 
-//import bootstrap from 'bootstrap' 
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+const app = createApp(App)
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+app.use(router)
 
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
-
-
-// Vue.use(require('bootstrap-vue/dist/bootstrap-vue.common.min'));
-
-// createApp(App).use(router).mount('#app') (za vue3)
-
-new Vue({
-
-    router,
-    render: h => h(App),
-
-}).$mount('#app')
-
-Vue.use(VueMq, {
-    breakpoints: {
-        mobile: 450,
-        tablet: 900,
-        laptop: 1250,
-        desktop: Infinity,
-    }
-})
+app.mount('#app')
