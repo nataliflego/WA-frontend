@@ -30,7 +30,7 @@
   border-color: rgb(0, 0, 0);
 }
 input {
-  background-color: rgb(206, 206, 206);
+  background-color: rgb(238, 237, 237);
 }
 
 h1 {

@@ -18,6 +18,12 @@ const router = createRouter({
       name: 'UpisiBolest',
       component: () => import(/* webpackChunkName: "about" */ '@/views/UpisiBolest.vue')  //Komponenta koja se montira kada se path unese u URL traku preglednika
 
+    },
+    {
+      path: '/registracija',
+      name: 'Registracija',
+      component: () => import(/* webpackChunkName: "about" */ '@/views/Registracija.vue')  //Komponenta koja se montira kada se path unese u URL traku preglednika
+
     }
   ]
 })
