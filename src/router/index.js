@@ -22,9 +22,19 @@ const router = createRouter({
     {
       path: '/registracija',
       name: 'Registracija',
-      component: () => import(/* webpackChunkName: "about" */ '@/views/Registracija.vue')  //Komponenta koja se montira kada se path unese u URL traku preglednika
+      component: () => import(/* webpackChunkName: "about" */ '@/views/Registracija.vue')
 
-    }
+    },
+    {
+      path: '/prijava',
+      name: 'Prijava',
+      component: () => import(/* webpackChunkName: "about" */ '@/views/Prijava.vue')
+    },
+    {
+      path: '/forma',
+      name: 'Forma',
+      component: () => import(/* webpackChunkName: "about" */ '@/views/Forma.vue')
+    },
   ]
 })
 

@@ -1,15 +1,4 @@
-<!--<template>
-  <h1>REGISTRACIJA</h1>
-</template>
 
-<style scoped>
-</style> -->
-<!-- 
-<script>
-export default {
-  name: "Registracija",
-};
-</script> -->
 <template>
   <section class="vh-100 bg-image">
     <div class="mask d-flex align-items-center h-100 gradient-custom-3">
@@ -80,9 +69,10 @@ export default {
                     <button
                       type="button"
                       class="
-                        btn btn-dark btn-block btn-lg
+                        btn btn-light btn-block btn-lg
                         gradient-custom-4
                         text-body
+                        border-secondary
                       "
                     >
                       Registriraj se
@@ -139,3 +129,9 @@ export default {
   background: linear-gradient(to right, rgb(218, 170, 196), rgb(141, 117, 162));
 }
 </style>
+
+<script>
+export default {
+  name: "Registracija",
+};
+</script>
