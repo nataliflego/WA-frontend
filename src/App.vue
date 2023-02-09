@@ -40,6 +40,10 @@
   padding-top: 2%;
   padding-bottom: 2%;
 }
+.imekorisnik {
+  margin-left: 100vh;
+  margin-top: 1.3vh;
+}
 </style>
 
 <template>
@@ -71,15 +75,33 @@
             >
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/registracija"
+            <RouterLink
+              v-if="!auth.authenticated"
+              class="nav-link"
+              to="/registracija"
               >Registracija</RouterLink
             >
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/prijava">Prijava</RouterLink>
+            <RouterLink
+              v-if="!auth.authenticated"
+              class="nav-link"
+              to="/prijava"
+              >Prijava</RouterLink
+            >
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/prijava">Odjava</RouterLink>
+            <RouterLink v-if="auth.authenticated" class="nav-link" to="/forma"
+              >Forma</RouterLink
+            >
+          </li>
+          <li class="nav-item">
+            <button type="button" v-if="auth.authenticated">
+              <a @click="odjava" class="nav-link" href="#">Odjava</a>
+            </button>
+          </li>
+          <li class="imekorisnik">
+            {{ auth.imekorisnik }}
           </li>
           <!-- <li class="nav-item">
             <a class="nav-link disabled">Prijava</a>
@@ -93,17 +115,25 @@
 
 <script>
 //import pocetnakomponenta from "@/components/pocetnakomponenta.vue";
+import { Auth } from "@/services";
 
 export default {
   name: "App",
-  /*
   data() {
-      return {
-      image: { backgroundImage: "url(src/assets/slika5.jpg)" },
-    }; 
-  },*/
-  /* ,
-  data: () => ({ link: "/views/upisibolest.vue" }), */
+    return {
+      auth: Auth.stanje,
+      /*  authenticated1: 0, */
+    };
+  },
+  /* mounted() {
+    authenticated1 = Auth.authenticated();
+  }, */
+  methods: {
+    odjava() {
+      Auth.odjava();
+      this.$router.go();
+    },
+  },
 };
 
 /* import Vue from "vue";

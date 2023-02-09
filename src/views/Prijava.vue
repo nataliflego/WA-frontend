@@ -18,9 +18,10 @@
               <div class="card-body p-5">
                 <h3 class="text-center mb-5">Prijava</h3>
 
-                <form>
+                <form @submit.prevent="prijavise">
                   <div class="form-outline mb-4">
                     <input
+                      v-model="email"
                       type="email"
                       id="form3Example3cg"
                       class="form-control form-control-lg"
@@ -32,6 +33,7 @@
 
                   <div class="form-outline mb-4">
                     <input
+                      v-model="password"
                       type="password"
                       id="form3Example4cg"
                       class="form-control form-control-lg"
@@ -42,8 +44,8 @@
                   </div>
 
                   <div class="d-flex justify-content-center">
-                    <RouterLink
-                      type="button"
+                    <button
+                      type="submit"
                       class="
                         btn btn-light btn-block btn-lg
                         gradient-custom-4
@@ -53,15 +55,14 @@
                       to="/forma"
                     >
                       Prijavi se
-                    </RouterLink>
+                    </button>
                   </div>
-
-                  <!-- <p class="text-center text-muted mt-5 mb-0">
-                    Već si član?
-                    <RouterLink to="/prijava" class="fw-bold text-body"
+                  <p class="text-center text-muted mt-5 mb-0">
+                    Nisi član?
+                    <RouterLink to="/registracija" class="fw-bold text-body"
                       ><u>Klikni ovdje</u></RouterLink
                     >
-                  </p> -->
+                  </p>
                 </form>
               </div>
             </div>
@@ -108,7 +109,26 @@
 </style>
 
 <script>
+import { Auth } from "@/services";
+
 export default {
   name: "Registracija",
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+
+  methods: {
+    async prijavise() {
+      let uspjesno = await Auth.prijava(this.email, this.password);
+      console.log("Rezultat prijave", uspjesno);
+
+      if (uspjesno == true) {
+        this.$router.push({ name: "Forma" }); // to dela!
+      }
+    },
+  },
 };
 </script>

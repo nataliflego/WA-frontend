@@ -40,7 +40,7 @@
                       >Lozinka</label
                     >
                   </div>
-
+                  <!-- 
                   <div class="form-outline mb-4">
                     <input
                       type="password"
@@ -50,7 +50,7 @@
                     <label class="form-label" for="form3Example4cdg"
                       >Ponovi lozinku</label
                     >
-                  </div>
+                  </div> -->
 
                   <!-- <div class="form-check d-flex justify-content-center mb-5">
                     <input

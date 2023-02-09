@@ -4,6 +4,9 @@ import HomeView from '../views/HomeView.vue'
 import Pocetna from '@/views/Pocetna.vue'
 import UpisiBolest from '@/views/UpisiBolest.vue'
 
+import { Auth } from '@/services'
+
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -37,5 +40,28 @@ const router = createRouter({
     },
   ]
 })
+
+router.beforeEach((to, from, next) => {      //   DELA!!
+  const korisnik = Auth.dajkorisnika();
+  if (to.name == 'Forma' && !korisnik) next({ name: 'Prijava' })
+  else next()
+})
+
+/*router.beforeEach((to, from, next) => {
+  const otvorenestranice = ["pocetna", "UpisiBolest", "Registracija", "Prijava"];   // DODAT JOS KAD NACINIS VIEWSE (views Bolest)
+  const prijavapotrebna = !otvorenestranice.includes(to.path);
+  const korisnik = Auth.dajkorisnika();
+
+  if (prijavapotrebna && !korisnik) {
+    next('/Prijava');   // mislin da triba pojt na registraciju
+    //return;
+  } else next();
+  /* if (prijavapotrebna && korisnik) {
+    next('/Prijava');
+    return;
+  } */
+
+//next();
+//})
 
 export default router
