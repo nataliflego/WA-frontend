@@ -6,7 +6,7 @@ let Service = axios.create({
     timeout: 1000,
 });
 // koristi na REQUESTu slijedeci interceptor, ta funkcija u 'use' prima taj request
-Service.interceptors.request.use((request) => {  // ako vrati request nazad na backend, mora se postaviti header
+/* Service.interceptors.request.use((request) => {  // ako vrati request nazad na backend, mora se postaviti header
 
     let token = Auth.dajToken();
     if (!token) {
@@ -23,7 +23,50 @@ Service.interceptors.response.use((response) => response, (error) => {
         Auth.odjava()
         $router.go()
     }
-})
+}) */
+
+let Iskustvo = {
+
+    async pretrazi(searchTerm) {
+        console.log("pocetak pretrazi()")
+        const response = await Service.get("/upisibolest", {
+            params: {
+                term: searchTerm,
+            }
+        });
+        console.log("nakon awaita na pretrazi() podaci sa backenda", response.data);
+
+        return response.data
+
+    },
+
+    /* razdjeli() {
+        let rijeci = this.kljucnerijeci;
+        let splited;
+        if (rijeci.includes(",") == true) {
+            splited = rijeci.split(",");
+        }
+        console.log(splited);
+    }, */
+
+    async spremanje(nazivbolesti, koristenilijek, mjestolijecenja, email, opisiskustva, kljucnerijeci) {
+        /*  kljucnerijeci = [];
+         let razdvojeno = kljucnerijeci.split(','); */
+
+        let spremi = await Service.post("/iskustvo", {
+            nazivbolesti: nazivbolesti,
+            lijek: koristenilijek,
+            mjesto: mjestolijecenja,
+            email: email,
+            opis: opisiskustva,
+            kljucnerijeci: kljucnerijeci
+        })
+        return spremi.data;
+        /*    .then(response => { console.log(response.data); })
+           .catch(error => { console.error(error); }); */
+    }
+
+}
 
 let Auth = {       // email = username
     async prijava(email, password) {
@@ -38,6 +81,20 @@ let Auth = {       // email = username
 
         return true;
     },
+    async registracija(ime, username, password) {  //PENSAN DA JE REGISTRACIJA DOBRA
+        let response = await Service.post("/registracija", {
+            ime: ime,
+            username: username,
+            password: password,
+        });
+        let user = response.data
+
+        console.log(user, "je tuuu")
+        localStorage.setItem('korisnik', JSON.stringify(user));
+
+        return true;
+    },
+
     odjava() {
         localStorage.removeItem('korisnik');
     },
@@ -73,4 +130,4 @@ let Auth = {       // email = username
     },
 };
 
-export { Service, Auth };
+export { Service, Auth, Iskustvo };

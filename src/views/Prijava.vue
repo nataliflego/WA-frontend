@@ -112,7 +112,7 @@
 import { Auth } from "@/services";
 
 export default {
-  name: "Registracija",
+  name: "Prijava",
   data() {
     return {
       email: "",

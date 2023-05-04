@@ -13,7 +13,7 @@
         na iskustvima pacijenata
       </p>
       <div class="butun">
-        <RouterLink class="btn btn-success" to="/upisibolest" role="button"
+        <RouterLink class="btn btn-success" to="/pretrazibolest" role="button"
           >KRENI</RouterLink
         >
       </div>

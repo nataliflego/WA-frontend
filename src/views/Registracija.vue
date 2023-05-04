@@ -9,9 +9,10 @@
               <div class="card-body p-5">
                 <h3 class="text-center mb-5">Registracija</h3>
 
-                <form>
+                <form @submit.prevent="registrirajse">
                   <div class="form-outline mb-4">
                     <input
+                      v-model="ime"
                       type="text"
                       id="form3Example1cg"
                       class="form-control form-control-lg"
@@ -21,6 +22,7 @@
 
                   <div class="form-outline mb-4">
                     <input
+                      v-model="username"
                       type="email"
                       id="form3Example3cg"
                       class="form-control form-control-lg"
@@ -32,6 +34,7 @@
 
                   <div class="form-outline mb-4">
                     <input
+                      v-model="password"
                       type="password"
                       id="form3Example4cg"
                       class="form-control form-control-lg"
@@ -59,21 +62,18 @@
                       value=""
                       id="form2Example3cg"
                     />
-                    <label class="form-check-label" for="form2Example3g">
-                      I agree all statements in
-                      <a href="#!" class="text-body"><u>Terms of service</u></a>
-                    </label>
-                  </div> -->
+                   -->
 
                   <div class="d-flex justify-content-center">
                     <button
-                      type="button"
+                      type="submit"
                       class="
                         btn btn-light btn-block btn-lg
                         gradient-custom-4
                         text-body
                         border-secondary
                       "
+                      to="/forma"
                     >
                       Registriraj se
                     </button>
@@ -131,7 +131,30 @@
 </style>
 
 <script>
+import { Auth } from "@/services";
+
 export default {
   name: "Registracija",
+  data() {
+    return {
+      ime: "",
+      username: "",
+      password: "",
+    };
+  },
+  methods: {
+    async registrirajse() {
+      let uspjesno = await Auth.registracija(
+        this.ime,
+        this.username,
+        this.password
+      );
+      console.log("Rezultat registracije", uspjesno);
+
+      if (uspjesno == true) {
+        this.$router.push({ name: "Forma" });
+      }
+    },
+  },
 };
 </script>

@@ -41,8 +41,11 @@
   padding-bottom: 2%;
 }
 .imekorisnik {
+  /*   
   margin-left: 100vh;
-  margin-top: 1.3vh;
+  margin-top: 1.3vh; */
+  /* float: right;
+  overflow: auto; */
 }
 </style>
 
@@ -70,8 +73,8 @@
             <!-- pisalo je: "nav-link-active" -->
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/upisibolest"
-              >Upiši bolest</RouterLink
+            <RouterLink class="nav-link" to="/pretrazibolest"
+              >Pretraži bolest</RouterLink
             >
           </li>
           <li class="nav-item">
