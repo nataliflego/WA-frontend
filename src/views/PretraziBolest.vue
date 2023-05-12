@@ -16,6 +16,7 @@
             placeholder="Pretraži bolest"
             @input="filterItems"
             required
+            v-bind:minlength="3"
           />
           <!--  <MyComponent :polje="getSearchTerm(searchTerm)" /> -->
           <!-- <ul v-show="showDropdown">
@@ -34,13 +35,14 @@
 
     <div id="iskustva">
       <br />
-      <h2>
-        Prikaz iskustva korisnika za pojam
-        <b
-          ><i>"{{ searchTerm }}"</i></b
-        >
-      </h2>
       <div class="skup_kartica" v-for="item in podaci" :key="item">
+        <h2>
+          Prikaz iskustva korisnika za pojam
+          <b
+            ><i>"{{ searchTerm }}"</i></b
+          >
+        </h2>
+        <hr />
         <div class="kartica" v-for="value in item">
           <router-link :to="{ name: 'Detaljno', params: { id: value._id } }"
             ><b
@@ -49,9 +51,15 @@
           ><br />
           Lijek: {{ value.lijek }} <br />
           email: {{ value.email }}
+          <p class="datum">{{ value.datum }}</p>
         </div>
 
-        <!-- <p>{{ item[0] }}</p> -->
+        <div class="dodatiskustvo">
+          <h4 class="drugih4">Želiš dodati svoje iskustvo?</h4>
+          <RouterLink to="/forma" class="fw-bold text-body"
+            ><p class="pklikni"><u> Klikni ovdje</u></p></RouterLink
+          >
+        </div>
       </div>
     </div>
   </form>
@@ -59,7 +67,6 @@
 
 <script>
 import { Iskustvo } from "@/services";
-import { Service } from "@/services";
 
 export default {
   name: "PretraziBolest",
@@ -69,10 +76,28 @@ export default {
       searchTerm: "",
       /*    matchingDocuments: [],
       showDropdown: false, */
-      jeVidljiv: false,
       podaci: [],
     };
   },
+
+  /*   beforeRouteUpdate(to, from, next) {
+    if (to.name !== "PretraziBolest") {
+      this.$store.commit("setSearchState", {
+        searchTerm: this.searchTerm,
+        podaci: this.podaci,
+      });
+    }
+    next();
+  },
+  beforeRouteLeave(to, from, next) {
+    if (to.name !== "PretraziBolest") {
+      this.$store.commit("setSearchState", {
+        searchTerm: this.searchTerm,
+        podaci: this.podaci,
+      });
+    }
+    next();
+  }, */
   // za dropdown menu
   /*  computed: {
     filterItems() {
@@ -98,11 +123,6 @@ export default {
       if (el) {
         el.scrollIntoView();
       }
-      /*  this.jevidljiv = true;
-      this.$nextTick(() => {
-        this.$refs.iskustva.scrollIntoView();
-      }); */
-      /*   this.$refs.iskustva.scrollIntoView(); */
     },
 
     async search() {
@@ -125,12 +145,63 @@ export default {
       } catch (error) {
         console.error("error tijekom search() ", error);
       }
+      localStorage.setItem("podaci", JSON.stringify(this.podaci));
+      localStorage.setItem("term", JSON.stringify(this.searchTerm));
     },
+    izbrisilocalstorage() {
+      localStorage.removeItem("podaci", "term");
+    },
+  },
+  mounted() {
+    const storedp = localStorage.getItem("podaci");
+    const storedt = localStorage.getItem("term");
+    if (storedp && storedt) {
+      this.podaci = JSON.parse(storedp);
+      this.searchTerm = JSON.parse(storedt);
+    }
+    // izbrisi localstorage kada se refresha
+    window.addEventListener("beforeunload", this.izbrisilocalstorage);
+  },
+  beforeUnmount() {
+    window.removeEventListener("beforeunload", this.izbrisilocalstorage);
   },
 };
 </script>
 
 <style scoped>
+.datum {
+  font-size: 12px;
+  text-align: right;
+  /* background-color: rgb(176, 152, 152); */
+  /*  margin-bottom: 4%; */ /*promijenilo se na sve kartice*/
+  padding-top: 10%;
+}
+.pklikni {
+  padding-top: 1%;
+  font-size: 14px;
+  display: inline-block;
+  margin-left: 1%;
+}
+.dodatiskustvo {
+  text-align: center;
+  margin-top: 3%;
+  border: 1px solid rgb(233, 239, 191);
+  border-radius: 22px;
+  background-color: rgba(150, 151, 89, 0.749);
+  margin-left: 3%;
+  margin-right: 3%;
+}
+.drugih4 {
+  padding-top: 1%;
+  color: white;
+  display: inline-block;
+  margin-left: 1%;
+}
+hr {
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-top: 2%;
+}
 a:link {
   color: black;
   background-color: transparent;
@@ -161,13 +232,13 @@ a:visited:active {
   /*   background-color: rgba(87, 179, 61, 0.767); */
   background-color: rgba(218, 218, 218, 0.767);
   margin-top: 2%;
-  margin-right: 2%;
+  margin-right: 0.5%;
   margin-left: 4%;
   margin-bottom: 2%;
   border: 1px solid black;
   border-radius: 9px;
 
-  width: 18%;
+  width: 20%;
   display: inline-block;
 }
 

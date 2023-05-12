@@ -3,7 +3,9 @@
     <div class="blok">
       <div class="lijevo">
         <!--  LIVO -->
-        <p><i>Ispuni tražena polja za slanje informacija</i></p>
+        <p>
+          <i>Ispuni tražena polja za slanje informacija o vašem iskustvu</i>
+        </p>
       </div>
 
       <div class="desno">
@@ -159,7 +161,7 @@ input {
   padding: 30px;
   width: 19%;
   text-align: right;
-  height: 110vh;
+  /* height: 110vh; */
   box-sizing: border-box;
 
   /* margin-right: 7%;
