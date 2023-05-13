@@ -8,13 +8,32 @@
         :key="komentar._id"
         style="list-style-type: none"
       >
-        <p>
+        <p v-if="!komentar.isEditing">
           <strong>{{ komentar.author }}</strong>
           <small>{{ komentar.timestamp }}</small> <br />
           {{ komentar.text }} <br />
         </p>
+        <div v-else>
+          <input v-model="komentar.updatedComment" type="text" />
+        </div>
+        <button
+          class="azuriraj btn btn-light btn-lg"
+          @click="toggleEdit(komentar)"
+        >
+          {{ komentar.isEditing ? "Spremi" : "Uredi" }}
+          <!--  Ažuriraj -->
+        </button>
+        <button
+          class="izbrisi btn btn-light btn-lg"
+          @click="deleteKomentar(komentar._id)"
+        >
+          Izbriši
+        </button>
       </li>
     </ul>
+    <div v-if="showIzbrisano">
+      <h6 style="background-color: red">Komentar je izbrisan</h6>
+    </div>
     <hr />
     <form @submit.prevent="addkomentar">
       <div v-if="prikazimessage">
@@ -62,6 +81,7 @@ export default {
       },
       message: "",
       prikazimessage: false,
+      showIzbrisano: false,
     };
   },
   created() {
@@ -70,6 +90,44 @@ export default {
   },
 
   methods: {
+    async toggleEdit(komentar) {
+      console.log("id: ", komentar._id);
+      if (komentar.isEditing) {
+        try {
+          await Service.put(`/${komentar._id}`, {
+            text: komentar.updatedComment,
+          });
+          komentar.text = komentar.updatedComment;
+          komentar.isEditing = false;
+        } catch (error) {
+          console.log("Error updating komentar: ", error);
+        }
+      } else {
+        komentar.updatedComment = komentar.text;
+        komentar.isEditing = true;
+      }
+    },
+
+    prikaziIzbrisano() {
+      this.izbrisano = true;
+      setTimeout(() => {
+        this.izbrisano = false;
+      }, 3000);
+    },
+    async deleteKomentar(commentId) {
+      try {
+        await Service.delete(`/komentari/${commentId}`);
+        this.komentari = this.komentari.filter(
+          (komentar) => komentar._id !== commentId
+        );
+        this.showIzbrisano = true;
+        setTimeout(() => {
+          this.showIzbrisano = false;
+        }, 3000);
+      } catch (error) {
+        console.log("Error brisanjem komentara: ", error);
+      }
+    },
     showMessage() {
       this.prikazimessage = true;
       setTimeout(() => {
@@ -155,6 +213,24 @@ export default {
 };
 </script>
 <style scoped>
+.azuriraj {
+  background-color: rgb(190, 136, 49);
+  padding-top: 1%;
+  padding-bottom: 1%;
+  font-size: 14px;
+}
+.azuriraj:hover {
+  background-color: rgba(190, 136, 49, 0.777);
+}
+.izbrisi {
+  background-color: brown;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  font-size: 14px;
+}
+.izbrisi:hover {
+  background-color: rgba(165, 42, 42, 0.6);
+}
 h6 {
   margin: 0.2%;
   background-color: rgb(147, 213, 131);
