@@ -22,12 +22,12 @@
         <hr />
       </template>
       <template v-else>
-        <p>Loading...</p>
+        <p>Učitavanje...</p>
       </template>
 
       <div class="dodatiskustvo">
         <h4 class="drugih4">Želiš dodati svoje iskustvo?</h4>
-        <RouterLink to="/forma" class="fw-bold text-body"
+        <RouterLink to="/dodajiskustvo" class="fw-bold text-body"
           ><p class="pklikni"><u> Klikni ovdje</u></p></RouterLink
         >
       </div>

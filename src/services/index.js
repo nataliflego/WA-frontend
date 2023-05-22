@@ -1,29 +1,38 @@
 import axios from 'axios';
-import $router from '@/router';
+import router from '@/router';
 
 let Service = axios.create({
     baseURL: 'http://localhost:3000',
     timeout: 1000,
 });
 // koristi na REQUESTu slijedeci interceptor, ta funkcija u 'use' prima taj request
-/* Service.interceptors.request.use((request) => {  // ako vrati request nazad na backend, mora se postaviti header
-
-    let token = Auth.dajToken();
+Service.interceptors.request.use((request) => {  // ako vrati request nazad na backend, mora se postaviti header
+    try {
+        request.headers['Authorization'] = 'Bearer ' + Auth.dajToken();
+    } catch (e) {
+        console.error("Greška u interceptoru", e);
+    }
+    return request;
+    /* let token = Auth.dajToken();
     if (!token) {
         $router.go(); //osvijezavanje stranice
         return;
     } else {
         request.headers['Authorization'] = 'Bearer ' + token;
     }
-    return request
+    return request */
 });
 
 Service.interceptors.response.use((response) => response, (error) => {
     if (error.response.status == 401 || error.response.status == 403) {
-        Auth.odjava()
-        $router.go()
+        const trenutnaruta = router.currentRoute.value.name;
+        if (trenutnaruta !== 'Prijava') {
+            Auth.odjava()
+            router.go()
+        };
     }
-}) */
+})
+
 
 let Iskustvo = {
 
@@ -70,29 +79,42 @@ let Iskustvo = {
 
 let Auth = {       // email = username
     async prijava(email, password) {
-        let response = await Service.post("/prijava", {
-            username: email,
-            password: password,
-        });
+        try {
+            let response = await Service.post("/prijava", {
+                username: email,
+                password: password,
+            });
 
-        let user = response.data // spremljeni podaci sa backenda
+            let user = response.data // spremljeni podaci sa backenda
 
-        localStorage.setItem('korisnik', JSON.stringify(user));
+            localStorage.setItem('korisnik', JSON.stringify(user));
 
-        return true;
+            return true;
+        } catch (error) {
+            console.error("Greška prilikom prijava() ", error);
+            throw new Error("Prijava nije uspijela");
+        }
     },
     async registracija(ime, username, password) {  //PENSAN DA JE REGISTRACIJA DOBRA
-        let response = await Service.post("/registracija", {
-            ime: ime,
-            username: username,
-            password: password,
-        });
-        let user = response.data
+        try {
+            let response = await Service.post("/registracija", {
+                ime: ime,
+                username: username,
+                password: password,
+            });
+            let user = response.data
 
-        console.log(user, "je tuuu")
-        localStorage.setItem('korisnik', JSON.stringify(user));
+            user.registered = true;
 
-        return true;
+            console.log("Korisnik je tu: ", user)
+            localStorage.setItem('korisnik', JSON.stringify(user));
+
+            return true;
+        } catch (error) {
+
+            console.error("Greška prilikom registracija() ", error);
+            throw error;
+        }
     },
 
     odjava() {
@@ -111,10 +133,16 @@ let Auth = {       // email = username
     },
     authenticated() {
         let korisnik = Auth.dajkorisnika();
-        if (korisnik && korisnik.token) {
+        if (korisnik && korisnik.username) {
             return true;
         }
         return false;
+    },
+    registriran() {
+        let korisnik = Auth.dajkorisnika();
+        if (korisnik) {
+            return true;
+        } return false;
     },
     stanje: {
         get authenticated() {
@@ -126,6 +154,9 @@ let Auth = {       // email = username
                 return korisnik.username;
             }
         },
+        get registriran() {
+            return Auth.registriran();
+        }
 
     },
 };

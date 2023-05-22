@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="submitForm">
+  <form ref="form" @submit.prevent="submitForm">
     <div class="blok">
       <div class="lijevo">
         <!--  LIVO -->
@@ -15,10 +15,12 @@
           <input
             type="text"
             class="form-control"
-            id="nazivbolesti"
+            id="nazivbolesti, myInput"
             v-model="nazivbolesti"
             name="naziv"
             placeholder="Naziv bolesti..."
+            required
+            :disabled="buttonClicked"
           />
         </div>
         <label for="koristenilijek">Korišteni lijek...</label>
@@ -26,9 +28,11 @@
           <input
             type="text"
             class="form-control"
-            id="koristenilijek"
+            id="koristenilijek, myInput"
             v-model="koristenilijek"
             name="lijek"
+            required
+            :disabled="buttonClicked"
           />
         </div>
         <label for="mjestolijecenja">Mjesto liječenja...</label>
@@ -36,9 +40,11 @@
           <input
             type="text"
             class="form-control"
-            id="mjestolijecenja"
+            id="mjestolijecenja, myInput"
             v-model="mjestolijecenja"
             name="mjesto"
+            required
+            :disabled="buttonClicked"
           />
         </div>
         <label for="email">Email...</label>
@@ -46,9 +52,11 @@
           <input
             type="email"
             class="form-control"
-            id="email"
+            id="email, myInput"
             v-model="email"
             name="email"
+            required
+            :disabled="buttonClicked"
           />
         </div>
         <label for="opisiskustva">Opis iskustva bolesti...</label>
@@ -56,10 +64,12 @@
           <textarea
             type="text"
             class="form-control"
-            id="opisiskustva"
+            id="opisiskustva, myInput"
             v-model="opisiskustva"
             name="opis"
             style="height: 100px"
+            required
+            :disabled="buttonClicked"
           ></textarea>
         </div>
         <label for="kljucnerijeci">Ključne riječi...</label>
@@ -67,19 +77,34 @@
           <input
             type="text"
             class="form-control"
-            id="kljucnerijeci"
+            id="kljucnerijeci, myInput"
             v-model="kljucnerijeci"
             name="kljucnerijeci"
+            required
+            :disabled="buttonClicked"
           />
         </div>
         <div class="d-flex justify-content-center">
           <button
-            v-on:click="displayMessage()"
+            v-on:click="
+              displayMessage();
+              buttonClicked = true;
+            "
+            :disabled="formIncomplete || buttonClicked"
             type="submit"
             class="btn btn-light btn-block btn-lg gradient-custom-4 text-body border-secondary"
           >
             Spremi simptome
           </button>
+          <div v-if="buttonClicked">
+            <RouterLink to="/pretrazibolest"
+              ><button
+                class="pretrazi btn btn-light btn-block btn-lg gradient-custom-4 text-body border-secondary"
+              >
+                Pretraži ostala iskustva
+              </button></RouterLink
+            >
+          </div>
         </div>
         <div
           style="border: 1px solid black; border-radius: 20px; margin: 20px"
@@ -96,6 +121,7 @@
 import { Iskustvo } from "@/services";
 
 export default {
+  name: "Dodajiskustvo",
   data() {
     return {
       nazivbolesti: "",
@@ -104,6 +130,7 @@ export default {
       email: "",
       opisiskustva: "",
       kljucnerijeci: [],
+      buttonClicked: false,
     };
   },
   methods: {
@@ -115,7 +142,9 @@ export default {
       }
       console.log(splited);
     }, */
+
     async submitForm() {
+      console.log("kliknut butun");
       let uspjesno = await Iskustvo.spremanje(
         this.nazivbolesti,
         this.koristenilijek,
@@ -127,22 +156,48 @@ export default {
       console.log("Rezultat spremanja", uspjesno);
 
       if (uspjesno == true) {
-        this.$router.push({ URL: "/pocetna" });
+        /*  this.$router.push({ URL: "/pocetna" }); */
+
+        this.displayMessage();
+
+        this.buttonClicked = true;
+
+        /*  this.$router.push({ name: "pocetna" }); */
       }
     },
     displayMessage() {
       var messageElement = document.getElementById("message");
       messageElement.textContent = "Uspješno spremljeno!";
-      messageElement.style.backgroundColor = "green";
-      messageElement.style.color = "white";
+      messageElement.style.backgroundColor = " rgb(147, 213, 131)";
+      messageElement.style.color = "black";
+      messageElement.style.padding = "1%";
+      messageElement.style.paddingLeft = "2%";
+    },
+  },
+  computed: {
+    formIncomplete() {
+      return (
+        !this.nazivbolesti ||
+        !this.koristenilijek ||
+        !this.mjestolijecenja ||
+        !this.email ||
+        !this.opisiskustva ||
+        !this.kljucnerijeci
+      );
     },
   },
 };
 </script>
 
 <style scoped>
+.pretrazi {
+  margin-left: 3%;
+  width: 100%;
+  margin-top: 9%;
+}
 button {
   margin-top: 4%;
+  margin-left: -2%;
 }
 label {
   margin-bottom: 2%;

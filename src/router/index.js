@@ -35,9 +35,9 @@ const router = createRouter({
       component: () => import(/* webpackChunkName: "about" */ '@/views/Prijava.vue')
     },
     {
-      path: '/forma',
-      name: 'Forma',
-      component: () => import(/* webpackChunkName: "about" */ '@/views/Forma.vue')
+      path: '/dodajiskustvo',
+      name: 'Dodajiskustvo',
+      component: () => import(/* webpackChunkName: "about" */ '@/views/Dodajiskustvo.vue')
     },
     {
       path: '/iskustva',
@@ -59,25 +59,20 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {      //   DELA!!
   const korisnik = Auth.dajkorisnika();
-  if (to.name == 'Forma' && !korisnik) next({ name: 'Prijava' })
+  if (to.name == 'Dodajiskustvo' && !korisnik) next({ name: 'Prijava' })
   else next()
 })
 
-/*router.beforeEach((to, from, next) => {
-  const otvorenestranice = ["pocetna", "UpisiBolest", "Registracija", "Prijava"];   // DODAT JOS KAD NACINIS VIEWSE (views Bolest)
+/* router.beforeEach((to, from, next) => {
+  const otvorenestranice = ["pocetna", "PretraziBolest", "Registracija", "Prijava", 'Detaljno', 'Iskustva2'];   // DODAT JOS KAD NACINIS VIEWSE (views Bolest)
   const prijavapotrebna = !otvorenestranice.includes(to.path);
   const korisnik = Auth.dajkorisnika();
-
+  //potreban login ali nema korisnika
   if (prijavapotrebna && !korisnik) {
-    next('/Prijava');   // mislin da triba pojt na registraciju
-    //return;
-  } else next();
-  /* if (prijavapotrebna && korisnik) {
-    next('/Prijava');
-    return;
-  } */
+    return next('/prijava');
+  }
 
-//next();
-//})
+  next();
+}) */
 
 export default router

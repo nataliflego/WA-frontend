@@ -4,14 +4,7 @@
     <div class="mask d-flex align-items-center h-100 gradient-custom-3">
       <div class="container h-100">
         <div
-          class="
-            row
-            d-flex
-            justify-content-center
-            align-items-center
-            h-100
-            visina
-          "
+          class="row d-flex justify-content-center align-items-center h-100 visina"
         >
           <div class="col-12 col-md-9 col-lg-7 col-xl-6">
             <div class="card" style="border-radius: 30px">
@@ -42,17 +35,15 @@
                       >Lozinka</label
                     >
                   </div>
+                  <div v-if="errorMessage" class="alert alert-danger">
+                    {{ errorMessage }}
+                  </div>
 
                   <div class="d-flex justify-content-center">
                     <button
                       type="submit"
-                      class="
-                        btn btn-light btn-block btn-lg
-                        gradient-custom-4
-                        text-body
-                        border-secondary
-                      "
-                      to="/forma"
+                      class="btn btn-light btn-block btn-lg gradient-custom-4 text-body border-secondary"
+                      to="/dodajiskustvo"
                     >
                       Prijavi se
                     </button>
@@ -117,16 +108,28 @@ export default {
     return {
       email: "",
       password: "",
+      errorMessage: "",
     };
   },
 
   methods: {
     async prijavise() {
-      let uspjesno = await Auth.prijava(this.email, this.password);
-      console.log("Rezultat prijave", uspjesno);
+      try {
+        let uspjesno = await Auth.prijava(this.email, this.password);
+        console.log("Rezultat prijave", uspjesno);
 
-      if (uspjesno == true) {
-        this.$router.push({ name: "Forma" }); // to dela!
+        if (uspjesno == true) {
+          this.$router.push({ name: "Dodajiskustvo" }); // to dela!
+        }
+      } catch (error) {
+        console.error("Greška prilikom prijavise() ", error);
+        if (error.response && error.response.status === 401) {
+          this.errorMessage =
+            "Prijava nije uspijela: Pogrešno korisničko ime ili lozinka.";
+        } else {
+          this.errorMessage = "Prijava nije uspijela: Došlo je do pogreške.";
+          /*   "Prijava nije uspijela: Došlo je do pogreške na serveru." */
+        }
       }
     },
   },

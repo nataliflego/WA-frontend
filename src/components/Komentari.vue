@@ -8,27 +8,72 @@
         :key="komentar._id"
         style="list-style-type: none"
       >
-        <p v-if="!komentar.isEditing">
-          <strong>{{ komentar.author }}</strong>
-          <small>{{ komentar.timestamp }}</small> <br />
-          {{ komentar.text }} <br />
-        </p>
-        <div v-else>
-          <input v-model="komentar.updatedComment" type="text" />
+        <div class="p" v-if="!komentar.isEditing">
+          <div class="livo">
+            <strong>{{ komentar.author }}</strong>
+            <small>{{ komentar.timestamp }}</small> <br />
+            {{ komentar.text }} <br />
+          </div>
+          <div class="buttons">
+            <button
+              :class="[
+                'prvi',
+                'azuriraj',
+                'btn',
+                'btn-light',
+                'btn-lg',
+                { spremi: komentar.isEditing },
+              ]"
+              @click="toggleEdit(komentar)"
+            >
+              {{ komentar.isEditing ? "Spremi" : "Uredi" }}
+            </button>
+            <button
+              class="treci izbrisi btn btn-light btn-lg"
+              @click="deleteKomentar(komentar._id)"
+            >
+              Izbriši
+            </button>
+          </div>
         </div>
-        <button
-          class="azuriraj btn btn-light btn-lg"
-          @click="toggleEdit(komentar)"
-        >
-          {{ komentar.isEditing ? "Spremi" : "Uredi" }}
-          <!--  Ažuriraj -->
-        </button>
-        <button
-          class="izbrisi btn btn-light btn-lg"
-          @click="deleteKomentar(komentar._id)"
-        >
-          Izbriši
-        </button>
+        <div v-else class="inputupdate">
+          <div class="livo">
+            <strong>{{ komentar.author }}</strong>
+            <small>{{ komentar.timestamp }}</small> <br />
+            <input
+              class="input"
+              v-model="komentar.updatedComment"
+              type="text"
+            />
+          </div>
+          <div class="buttons">
+            <button
+              :class="[
+                'prvi',
+                'azuriraj',
+                'btn',
+                'btn-light',
+                'btn-lg',
+                { spremi: komentar.isEditing },
+              ]"
+              @click="toggleEdit(komentar)"
+            >
+              {{ komentar.isEditing ? "Spremi" : "Uredi" }}
+            </button>
+            <button
+              class="drugi ponisti btn btn-light btn-lg"
+              @click="ponistiEdit(komentar)"
+            >
+              Poništi
+            </button>
+            <button
+              class="treci izbrisi btn btn-light btn-lg"
+              @click="deleteKomentar(komentar._id)"
+            >
+              Izbriši
+            </button>
+          </div>
+        </div>
       </li>
     </ul>
     <div v-if="showIzbrisano">
@@ -90,8 +135,13 @@ export default {
   },
 
   methods: {
+    ponistiEdit(komentar) {
+      komentar.updatedComment = komentar.text;
+      komentar.isEditing = false;
+    },
     async toggleEdit(komentar) {
       console.log("id: ", komentar._id);
+
       if (komentar.isEditing) {
         try {
           await Service.put(`/${komentar._id}`, {
@@ -103,6 +153,12 @@ export default {
           console.log("Error updating komentar: ", error);
         }
       } else {
+        //drugi kom nije moguce uređivat dok uređujes
+        this.komentari.forEach((k) => {
+          if (k._id !== komentar._id) {
+            k.isEditing = false;
+          }
+        });
         komentar.updatedComment = komentar.text;
         komentar.isEditing = true;
       }
@@ -213,14 +269,57 @@ export default {
 };
 </script>
 <style scoped>
+.buttons button.spremi {
+  background-color: rgb(87, 197, 82); /* Replace with your desired color */
+}
+
+.prvi {
+  margin: 0%;
+}
+.drugi {
+  margin: 0%;
+}
+.treci {
+  margin: 0%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.buttons button {
+  margin-left: 8px;
+}
+.ponisti {
+  background-color: rgb(62, 147, 227);
+  padding-top: 1%;
+  padding-bottom: 1%;
+  font-size: 14px;
+}
+.ponisti:hover {
+  background-color: rgb(121, 182, 239);
+}
+.inputupdate {
+  margin: 0.2%;
+  background-color: rgb(233, 233, 233);
+  padding: 2%;
+  width: 100%;
+  border-radius: 20px;
+}
+.input {
+  border-radius: 20px;
+  border: 3px solid #ccc;
+  padding-left: 1.5%;
+}
 .azuriraj {
-  background-color: rgb(190, 136, 49);
+  background-color: rgb(149, 146, 140);
   padding-top: 1%;
   padding-bottom: 1%;
   font-size: 14px;
 }
 .azuriraj:hover {
-  background-color: rgba(190, 136, 49, 0.777);
+  background-color: rgba(149, 146, 140, 0.752);
 }
 .izbrisi {
   background-color: brown;
@@ -279,13 +378,14 @@ ul {
 h4 {
   padding: 1.3%;
 }
-p {
+.p {
   margin: 0.2%;
   background-color: rgb(233, 233, 233);
   padding: 2%;
   width: 100%;
   border-radius: 20px;
 }
+
 li {
   padding: 0.5%;
   /* background-color: rgb(205, 205, 211); */
@@ -296,5 +396,6 @@ label {
 }
 button {
   margin: 2%;
+  /* float: right; */
 }
 </style>

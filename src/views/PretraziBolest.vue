@@ -56,7 +56,7 @@
 
         <div class="dodatiskustvo">
           <h4 class="drugih4">Želiš dodati svoje iskustvo?</h4>
-          <RouterLink to="/forma" class="fw-bold text-body"
+          <RouterLink to="/dodajiskustvo" class="fw-bold text-body"
             ><p class="pklikni"><u> Klikni ovdje</u></p></RouterLink
           >
         </div>
@@ -145,25 +145,27 @@ export default {
       } catch (error) {
         console.error("error tijekom search() ", error);
       }
-      localStorage.setItem("podaci", JSON.stringify(this.podaci));
-      localStorage.setItem("term", JSON.stringify(this.searchTerm));
+      sessionStorage.setItem("podaci", JSON.stringify(this.podaci));
+      sessionStorage.setItem("term", JSON.stringify(this.searchTerm));
     },
-    izbrisilocalstorage() {
-      localStorage.removeItem("podaci", "term");
+    izbrisisessionstorage() {
+      sessionStorage.removeItem("podaci", "term");
     },
   },
   mounted() {
-    const storedp = localStorage.getItem("podaci");
-    const storedt = localStorage.getItem("term");
+    const storedp = sessionStorage.getItem("podaci");
+    const storedt = sessionStorage.getItem("term");
     if (storedp && storedt) {
       this.podaci = JSON.parse(storedp);
       this.searchTerm = JSON.parse(storedt);
+    } else {
+      this.izbrisisessionstorage();
     }
     // izbrisi localstorage kada se refresha
-    window.addEventListener("beforeunload", this.izbrisilocalstorage);
+    window.addEventListener("beforeunload", this.izbrisisessionstorage);
   },
   beforeUnmount() {
-    window.removeEventListener("beforeunload", this.izbrisilocalstorage);
+    window.removeEventListener("beforeunload", this.izbrisisessionstorage);
   },
 };
 </script>

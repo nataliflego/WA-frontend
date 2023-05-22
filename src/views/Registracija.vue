@@ -43,37 +43,16 @@
                       >Lozinka</label
                     >
                   </div>
-                  <!-- 
-                  <div class="form-outline mb-4">
-                    <input
-                      type="password"
-                      id="form3Example4cdg"
-                      class="form-control form-control-lg"
-                    />
-                    <label class="form-label" for="form3Example4cdg"
-                      >Ponovi lozinku</label
-                    >
-                  </div> -->
 
-                  <!-- <div class="form-check d-flex justify-content-center mb-5">
-                    <input
-                      class="form-check-input me-2"
-                      type="checkbox"
-                      value=""
-                      id="form2Example3cg"
-                    />
-                   -->
+                  <div v-if="errorMessage" class="alert alert-danger">
+                    {{ errorMessage }}
+                  </div>
 
                   <div class="d-flex justify-content-center">
                     <button
                       type="submit"
-                      class="
-                        btn btn-light btn-block btn-lg
-                        gradient-custom-4
-                        text-body
-                        border-secondary
-                      "
-                      to="/forma"
+                      class="btn btn-light btn-block btn-lg gradient-custom-4 text-body border-secondary"
+                      to="/dodajiskustvo"
                     >
                       Registriraj se
                     </button>
@@ -132,6 +111,7 @@
 
 <script>
 import { Auth } from "@/services";
+import $router from "@/router";
 
 export default {
   name: "Registracija",
@@ -140,19 +120,30 @@ export default {
       ime: "",
       username: "",
       password: "",
+      errorMessage: "",
     };
   },
   methods: {
     async registrirajse() {
-      let uspjesno = await Auth.registracija(
-        this.ime,
-        this.username,
-        this.password
-      );
-      console.log("Rezultat registracije", uspjesno);
+      try {
+        let uspjesno = await Auth.registracija(
+          this.ime,
+          this.username,
+          this.password
+        );
+        console.log("Rezultat registracije", uspjesno);
 
-      if (uspjesno == true) {
-        this.$router.push({ name: "Forma" });
+        if (uspjesno == true) {
+          this.$router.push({ name: "Dodajiskustvo" });
+        }
+      } catch (error) {
+        console.error("Greška prilikom registrirajse() ", error);
+        if (error.response === 11000) {
+          this.errorMessage = "Korisnik već postoji.";
+        } else {
+          this.errorMessage = "Registracija nije uspijela: Pokušaj ponovno.";
+        }
+        throw error;
       }
     },
   },
