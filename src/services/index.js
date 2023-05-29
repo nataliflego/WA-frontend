@@ -49,15 +49,6 @@ let Iskustvo = {
 
     },
 
-    /* razdjeli() {
-        let rijeci = this.kljucnerijeci;
-        let splited;
-        if (rijeci.includes(",") == true) {
-            splited = rijeci.split(",");
-        }
-        console.log(splited);
-    }, */
-
     async spremanje(nazivbolesti, koristenilijek, mjestolijecenja, email, opisiskustva, kljucnerijeci) {
         /*  kljucnerijeci = [];
          let razdvojeno = kljucnerijeci.split(','); */
@@ -106,6 +97,7 @@ let Auth = {       // email = username
 
             user.registered = true;
 
+
             console.log("Korisnik je tu: ", user)
             localStorage.setItem('korisnik', JSON.stringify(user));
 
@@ -144,6 +136,17 @@ let Auth = {       // email = username
             return true;
         } return false;
     },
+    id() {
+        let korisnik = Auth.dajkorisnika();
+        console.log("Stored user data: ", korisnik)
+        if (korisnik && korisnik._id) {
+            return korisnik._id;
+        } else {
+            console.log("Nema id-a")
+            return null;
+        }
+    },
+
     stanje: {
         get authenticated() {
             return Auth.authenticated();
@@ -151,12 +154,17 @@ let Auth = {       // email = username
         get imekorisnik() {
             let korisnik = Auth.dajkorisnika();
             if (korisnik) {
+                console.log("imekorisnik je tu: ", korisnik.username)
                 return korisnik.username;
             }
         },
         get registriran() {
             return Auth.registriran();
+        },
+        get id() {
+            return Auth.id();
         }
+
 
     },
 };

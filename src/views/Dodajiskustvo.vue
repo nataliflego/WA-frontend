@@ -20,7 +20,7 @@
             name="naziv"
             placeholder="Naziv bolesti..."
             required
-            :disabled="buttonClicked"
+            :disabled="disableInputs"
           />
         </div>
         <label for="koristenilijek">Korišteni lijek...</label>
@@ -32,7 +32,7 @@
             v-model="koristenilijek"
             name="lijek"
             required
-            :disabled="buttonClicked"
+            :disabled="disableInputs"
           />
         </div>
         <label for="mjestolijecenja">Mjesto liječenja...</label>
@@ -44,7 +44,7 @@
             v-model="mjestolijecenja"
             name="mjesto"
             required
-            :disabled="buttonClicked"
+            :disabled="disableInputs"
           />
         </div>
         <label for="email">Email...</label>
@@ -56,7 +56,7 @@
             v-model="email"
             name="email"
             required
-            :disabled="buttonClicked"
+            :disabled="disableInputs"
           />
         </div>
         <label for="opisiskustva">Opis iskustva bolesti...</label>
@@ -69,7 +69,7 @@
             name="opis"
             style="height: 100px"
             required
-            :disabled="buttonClicked"
+            :disabled="disableInputs"
           ></textarea>
         </div>
         <label for="kljucnerijeci">Ključne riječi...</label>
@@ -81,15 +81,18 @@
             v-model="kljucnerijeci"
             name="kljucnerijeci"
             required
-            :disabled="buttonClicked"
+            :disabled="disableInputs"
           />
         </div>
         <div class="d-flex justify-content-center">
-          <button
-            v-on:click="
+          <!-- click="
+              submitForm;
               displayMessage();
               buttonClicked = true;
-            "
+            " -->
+          <!--   :disabled="formIncomplete || buttonClicked" -->
+          <button
+            @submit.prevent="submitForm"
             :disabled="formIncomplete || buttonClicked"
             type="submit"
             class="btn btn-light btn-block btn-lg gradient-custom-4 text-body border-secondary"
@@ -107,9 +110,13 @@
           </div>
         </div>
         <div
+          v-if="message"
           style="border: 1px solid black; border-radius: 20px; margin: 20px"
+          :style="messageStyle"
           id="message"
-        ></div>
+        >
+          {{ message }}
+        </div>
       </div>
     </div>
   </form>
@@ -131,18 +138,11 @@ export default {
       opisiskustva: "",
       kljucnerijeci: [],
       buttonClicked: false,
+      message: "",
+      messageStyle: {},
     };
   },
   methods: {
-    /* razdjeli() {
-      let rijeci = this.kljucnerijeci;
-      let splited;
-      if (rijeci.includes(",") == true) {
-        splited = rijeci.split(",");
-      }
-      console.log(splited);
-    }, */
-
     async submitForm() {
       console.log("kliknut butun");
       let uspjesno = await Iskustvo.spremanje(
@@ -155,26 +155,50 @@ export default {
       );
       console.log("Rezultat spremanja", uspjesno);
 
-      if (uspjesno == true) {
+      if (uspjesno) {
         /*  this.$router.push({ URL: "/pocetna" }); */
 
-        this.displayMessage();
-
         this.buttonClicked = true;
-
+        console.log("Button clicked status:", this.buttonClicked);
         /*  this.$router.push({ name: "pocetna" }); */
+
+        this.displayMessage();
+        /* this.disableInputs(); */
       }
     },
+    /* disableInputs() {
+      const inputs = document.getElementsByTagName("input");
+      const textareas = document.getElementsByTagName("textarea");
+
+      for (let i = 0; i < inputs.length; i++) {
+        inputs[i].setAttribute("disabled", "disabled");
+      }
+
+      for (let i = 0; i < textareas.length; i++) {
+        textareas[i].setAttribute("disabled", "disabled");
+      }
+    }, */
     displayMessage() {
-      var messageElement = document.getElementById("message");
+      this.message = "Uspješno spremljeno!";
+      this.messageStyle = {
+        backgroundColor: "rgb(147, 213, 131)",
+        color: "black",
+        padding: "1%",
+        paddingLeft: "2%",
+      };
+
+      /*   var messageElement = document.getElementById("message");
       messageElement.textContent = "Uspješno spremljeno!";
       messageElement.style.backgroundColor = " rgb(147, 213, 131)";
       messageElement.style.color = "black";
       messageElement.style.padding = "1%";
-      messageElement.style.paddingLeft = "2%";
+      messageElement.style.paddingLeft = "2%"; */
     },
   },
   computed: {
+    disableInputs() {
+      return this.buttonClicked;
+    },
     formIncomplete() {
       return (
         !this.nazivbolesti ||

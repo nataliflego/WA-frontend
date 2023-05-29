@@ -121,6 +121,7 @@ export default {
         if (uspjesno == true) {
           this.$router.push({ name: "Dodajiskustvo" }); // to dela!
         }
+        /* console.log(localStorage.getItem("korisnik")); */
       } catch (error) {
         console.error("Greška prilikom prijavise() ", error);
         if (error.response && error.response.status === 401) {

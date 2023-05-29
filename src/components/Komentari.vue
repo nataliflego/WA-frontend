@@ -10,12 +10,13 @@
       >
         <div class="p" v-if="!komentar.isEditing">
           <div class="livo">
-            <strong>{{ komentar.author }}</strong>
+            <strong>{{ komentar.authorName }}</strong>
             <small>{{ komentar.timestamp }}</small> <br />
             {{ komentar.text }} <br />
           </div>
           <div class="buttons">
             <button
+              v-if="komentar.authorName === loggedInUser"
               :class="[
                 'prvi',
                 'azuriraj',
@@ -29,6 +30,7 @@
               {{ komentar.isEditing ? "Spremi" : "Uredi" }}
             </button>
             <button
+              v-if="komentar.authorName === loggedInUser"
               class="treci izbrisi btn btn-light btn-lg"
               @click="deleteKomentar(komentar._id)"
             >
@@ -38,7 +40,7 @@
         </div>
         <div v-else class="inputupdate">
           <div class="livo">
-            <strong>{{ komentar.author }}</strong>
+            <strong>{{ komentar.authorName }}</strong>
             <small>{{ komentar.timestamp }}</small> <br />
             <input
               class="input"
@@ -86,8 +88,14 @@
       </div>
       <div class="formazakom">
         <label for="author">Autor:</label>
-        <input id="author" type="text" v-model="newComment.author" required />
-        <!--  <label for="text"> Komentar:</label> -->
+        <input
+          id="author"
+          type="text"
+          v-model="newComment.authorName"
+          required
+          readonly
+        />
+
         <br />
         <textarea
           id="text"
@@ -106,6 +114,7 @@
 <script>
 import moment from "moment";
 import { Service } from "@/services";
+import { Auth } from "@/services";
 
 export default {
   name: "Komentari",
@@ -120,17 +129,26 @@ export default {
     return {
       komentari: [],
       newComment: {
-        author: "",
+        authorid: "",
         text: "",
         timestamp: "",
+        authorName: "",
       },
       message: "",
       prikazimessage: false,
       showIzbrisano: false,
+
+      auth: Auth.stanje,
+      loggedInUser: "",
     };
+  },
+  mounted() {
+    this.newComment.authorName = Auth.stanje.imekorisnik;
+    this.loggedInUser = Auth.stanje.imekorisnik;
   },
   created() {
     // dohvati komentare za trenutno iskustvo
+    /*     this.newComment.author = this.auth.imekorisnik; */
     this.fetchComments();
   },
 
@@ -140,13 +158,16 @@ export default {
       komentar.isEditing = false;
     },
     async toggleEdit(komentar) {
+      /*      debugger; */
       console.log("id: ", komentar._id);
-
+      console.log("toggleEdit funkcija je pozvana");
       if (komentar.isEditing) {
         try {
           await Service.put(`/${komentar._id}`, {
             text: komentar.updatedComment,
           });
+          console.log("Komentar updated uspjesno");
+
           komentar.text = komentar.updatedComment;
           komentar.isEditing = false;
         } catch (error) {
@@ -232,6 +253,8 @@ export default {
       }
     },
     async addkomentar() {
+      console.log("funckija addkomentar");
+      /*  debugger; */
       const timestamp = moment().format("MMMM Do YYYY, h:mm:ss a");
       // dal je timestamp validan
       if (!moment(timestamp, "MMMM Do YYYY, h:mm:ss a", true).isValid()) {
@@ -240,20 +263,23 @@ export default {
       }
       const newComment = {
         experienceId: this.experienceId,
-        author: this.newComment.author,
+        authorid: this.newComment.authorid,
         text: this.newComment.text,
         objavljeno: timestamp,
+        authorName: this.newComment.authorName,
       };
       try {
         const response = await Service.post(
           `/iskustvo/${this.experienceId}/komentari`,
-          this.newComment
+          newComment
+          /*   this.newComment */
         );
         const dodanKom = response.data;
         this.komentari.push(dodanKom);
 
-        this.newComment.author = "";
+        this.newComment.authorid = "";
         this.newComment.text = "";
+        this.newComment.authorName = Auth.stanje.imekorisnik;
         this.message = "Komentar je uspjesno dodan!";
         this.showMessage();
         this.fetchComments();

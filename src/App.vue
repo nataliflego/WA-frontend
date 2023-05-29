@@ -138,7 +138,8 @@ export default {
     odjava() {
       Auth.odjava();
       this.auth = Auth.stanje;
-      /*     this.$router.go(); */
+      /*    this.$router.push({ path: '/' }); */
+      this.$router.go();
     },
   },
 };
