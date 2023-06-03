@@ -71,7 +71,7 @@
           </li>
           <li class="nav-item">
             <RouterLink
-              v-if="!auth.authenticated && !auth.registriran"
+              v-if="!auth.authenticated"
               :class="{
                 'nav-link': true,
                 active: $route.path === '/prijava',
@@ -83,7 +83,7 @@
           <li class="nav-item">
             <!-- && auth.registriran -->
             <RouterLink
-              v-if="auth.authenticated || auth.registriran"
+              v-if="auth.authenticated"
               :class="{
                 'nav-link': true,
                 active: $route.path === '/dodajiskustvo',
@@ -91,14 +91,16 @@
               to="/dodajiskustvo"
               >Dodaj iskustvo</RouterLink
             >
+            <!--       v-if="auth.authenticated || auth.registriran" -->
           </li>
           <li class="butun nav-item">
             <!-- && auth.registriran -->
             <button
               type="button"
-              v-if="auth.authenticated || auth.registriran"
+              v-if="auth.authenticated"
               style="border-radius: 10px; background-color: rgb(239, 239, 239)"
             >
+              <!--  v-if="auth.authenticated || auth.registriran" -->
               <a @click="odjava" class="nav-link" href="#">Odjava</a>
             </button>
           </li>

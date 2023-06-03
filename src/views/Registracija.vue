@@ -52,7 +52,7 @@
                     <button
                       type="submit"
                       class="btn btn-light btn-block btn-lg gradient-custom-4 text-body border-secondary"
-                      to="/dodajiskustvo"
+                      to="/prijava"
                     >
                       Registriraj se
                     </button>
@@ -134,7 +134,7 @@ export default {
         console.log("Rezultat registracije", uspjesno);
 
         if (uspjesno == true) {
-          this.$router.push({ name: "Dodajiskustvo" });
+          this.$router.push({ name: "Prijava" });
         }
       } catch (error) {
         console.error("Greška prilikom registrirajse() ", error);
