@@ -2,7 +2,7 @@ import axios from 'axios';
 import router from '@/router';
 
 let Service = axios.create({
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:4000',
     timeout: 1000,
 });
 // koristi na REQUESTu slijedeci interceptor, ta funkcija u 'use' prima taj request
