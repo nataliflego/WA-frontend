@@ -2,8 +2,8 @@ import axios from 'axios';
 import router from '@/router';
 
 let Service = axios.create({
-    /* baseURL: 'http://localhost:4000', */
-    baseURL: 'https://wabackend.onrender.com',
+    baseURL: 'http://localhost:4000',
+    /*   baseURL: 'https://wabackend.onrender.com', */
     timeout: 1000,
 });
 // koristi na REQUESTu slijedeci interceptor, ta funkcija u 'use' prima taj request
