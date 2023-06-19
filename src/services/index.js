@@ -2,9 +2,14 @@ import axios from 'axios';
 import router from '@/router';
 
 let Service = axios.create({
-    baseURL: 'http://localhost:4000',
-    /*   baseURL: 'https://wabackend.onrender.com', */
+    baseURL: 'http://localhost:4000'/* ||  'https://wabackend.onrender.com' */,
+    /* url: 'https://wabackend.onrender.com', */
+    /* baseURL: 'https://wabackend.onrender.com', */
     timeout: 1000,
+    headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+    }
 });
 // koristi na REQUESTu slijedeci interceptor, ta funkcija u 'use' prima taj request
 Service.interceptors.request.use((request) => {  // ako vrati request nazad na backend, mora se postaviti header

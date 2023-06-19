@@ -84,6 +84,22 @@
             :disabled="disableInputs"
           />
         </div>
+        <div
+          class="poruka"
+          v-if="message"
+          style="
+            border-radius: 20px;
+            margin-left: 4px;
+            margin-top: 6%;
+            margin-bottom: 2%;
+            width: 69%;
+          "
+          :style="messageStyle"
+          id="message"
+        >
+          <!-- border: 1px solid black; -->
+          {{ message }}
+        </div>
         <div class="d-flex justify-content-center">
           <!-- click="
               submitForm;
@@ -95,7 +111,7 @@
             @submit.prevent="submitForm"
             :disabled="formIncomplete || buttonClicked"
             type="submit"
-            class="btn btn-light btn-block btn-lg gradient-custom-4 text-body border-secondary"
+            class="spremi btn btn-light btn-block btn-lg gradient-custom-4 text-body border-secondary"
           >
             Spremi simptome
           </button>
@@ -108,14 +124,6 @@
               </button></RouterLink
             >
           </div>
-        </div>
-        <div
-          v-if="message"
-          style="border: 1px solid black; border-radius: 20px; margin: 20px"
-          :style="messageStyle"
-          id="message"
-        >
-          {{ message }}
         </div>
       </div>
     </div>
@@ -214,14 +222,23 @@ export default {
 </script>
 
 <style scoped>
+.poruka {
+  margin-left: -10px;
+}
+.spremi {
+  /*  margin-left: -65%; */
+  margin-left: -30%;
+}
+
 .pretrazi {
   margin-left: 3%;
   width: 100%;
   margin-top: 9%;
 }
 button {
-  margin-top: 4%;
-  margin-left: -2%;
+  margin-top: 3.5%;
+  /*  margin-left: -2%; */
+  margin-bottom: 2%;
 }
 label {
   margin-bottom: 2%;

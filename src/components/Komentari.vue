@@ -93,6 +93,7 @@
           type="text"
           v-model="newComment.authorName"
           required
+          :disabled="!loggedInUser"
           readonly
         />
 
@@ -101,6 +102,7 @@
           id="text"
           v-model="newComment.text"
           required
+          :disabled="!loggedInUser"
           placeholder="Ostavi komentar..."
         ></textarea>
         <button type="submit" class="btn btn-light btn-lg">
@@ -253,6 +255,10 @@ export default {
       }
     },
     async addkomentar() {
+      if (!this.loggedInUser) {
+        window.location.href = "/prijava";
+        return;
+      }
       console.log("funckija addkomentar");
       /*  debugger; */
       const timestamp = moment().format("MMMM Do YYYY, h:mm:ss a");

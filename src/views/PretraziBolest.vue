@@ -135,6 +135,7 @@ export default {
         );
 
         this.podaci = uspjesno;
+
         console.log("this.podaci: ", this.podaci);
 
         for (let i = 0; i < this.podaci.length; i++) {

@@ -17,6 +17,12 @@
           >KRENI</RouterLink
         >
       </div>
+      <div class="upozorenje">
+        Informacije koje se dijele na platformi temelje se na osobnim iskustvima
+        i ne <br />smiju se smatrati medicinskim savjetom ili zamjenom za
+        stručne konzultacije. <br />
+        <b>Savjetovati se sa svojim liječnikom!</b>
+      </div>
     </div>
   </div>
 </template>
@@ -32,6 +38,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.upozorenje {
+  margin-top: 8%;
+  font-size: 13px;
+  background-color: rgba(248, 246, 111, 0.656);
+  padding: 8px;
+  border-radius: 8px;
+}
 .kontejner {
   padding: 60px;
   margin-top: 20px;
@@ -53,7 +66,7 @@ export default {
   margin-top: 10px;
   text-align: center;
   margin-right: 10px;
-  margin-left: 8%;
+  margin-left: 2%;
   vertical-align: middle;
 }
 p {

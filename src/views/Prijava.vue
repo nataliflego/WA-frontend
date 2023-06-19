@@ -109,7 +109,11 @@ export default {
       email: "",
       password: "",
       errorMessage: "",
+      redirectPath: null,
     };
+  },
+  created() {
+    this.redirectPath = this.$route.query.redirect;
   },
 
   methods: {
@@ -119,7 +123,8 @@ export default {
         console.log("Rezultat prijave", uspjesno);
 
         if (uspjesno == true) {
-          this.$router.push({ name: "Dodajiskustvo" }); // to dela!
+          /*  this.$router.push({ name: "Dodajiskustvo" }); */ // to dela!
+          this.$router.go(-1);
         }
         /* console.log(localStorage.getItem("korisnik")); */
       } catch (error) {
