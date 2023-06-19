@@ -2,7 +2,7 @@ import axios from 'axios';
 import router from '@/router';
 
 let Service = axios.create({
-    baseURL: 'http://localhost:4000'/* ||  'https://wabackend.onrender.com' */,
+    baseURL: 'https://wabackend.onrender.com',
     /* url: 'https://wabackend.onrender.com', */
     /* baseURL: 'https://wabackend.onrender.com', */
     timeout: 1000,
